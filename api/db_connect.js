@@ -3,7 +3,8 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'api',
-    password: '+7)h&4tT=U^!dpW'
+    password: '+7)h&4tT=U^!dpW',
+    database: 'api'
 })
 
 con.connect(function(err) {
