@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
 const userHandler = require('./user-info/userHandler');
+const con = require('./db_connect').getcon()
 
 const app = express();
 const PORT = 4000;
@@ -62,6 +63,7 @@ app.post('/login', async (req, res) => {
         message: 'Login successful',
         token: generatedToken,
       });
+      
     } else {
       res.status(401).send({
         error: 'Invalid credentials, access denied!',

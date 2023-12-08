@@ -1,9 +1,22 @@
 const con = require("../../db_connect").getcon();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken'); // Dodatkowa biblioteka do generowania tokenów JWT
 
-async function addUser(username, password, phone, email, name, surname, active, token) {
+async function generateToken() {
+  // Przykładowe ustawienia tokena, możesz dostosować według własnych potrzeb
+  const tokenData = {
+    expiresIn: '1h', // Token będzie ważny przez 1 godzinę
+    issuer: 'YourIssuer', // Nazwa wydawcy tokenu
+    // ... dodaj inne dane, które chciałbyś zawrzeć w tokenie
+  };
+
+  // Zwróć nowo wygenerowany token
+  return jwt.sign(tokenData, 'yourSecretKey'); // Zastąp 'yourSecretKey' swoim prywatnym kluczem
+}
+
+async function addUser(username, password, phone, email, name, surname, active) {
   // Sprawdź, czy wymagane pola są dostarczone
-  if (!username || !password || !phone || !email || !name || !surname || active === undefined || !token) {
+  if (!username || !password || !phone || !email || !name || !surname || active === undefined) {
     console.error('Wymagane pola nie zostały dostarczone.');
     con.end();
     return;
@@ -11,6 +24,8 @@ async function addUser(username, password, phone, email, name, surname, active, 
 
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  const token = await generateToken(); // Wygeneruj nowy token
 
   const sqlQuery = 'INSERT INTO `users` (`username`, `password`, `phone`, `email`, `name`, `surname`, `active`, `token`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
   
@@ -26,14 +41,13 @@ async function addUser(username, password, phone, email, name, surname, active, 
 }
 
 // Przykład użycia:
-const username = 'user';
-const password = 'user';
+const username = 'Root';
+const password = 'Root';
 const phone = '123456789';
-const email = 'user@localhost.com';
-const name = 'User';
-const surname = 'User';
+const email = 'root@localhost.com';
+const name = 'Root';
+const surname = 'Root';
 const active = 1; // 1 oznacza aktywnego użytkownika, 0 oznacza nieaktywnego
-const token = 'exampleToken123';
 
 // Dodaj użytkownika do bazy danych
-addUser(username, password, phone, email, name, surname, active, token);
+addUser(username, password, phone, email, name, surname, active);
