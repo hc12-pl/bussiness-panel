@@ -1,14 +1,14 @@
 const con = require("../db_connect").getcon();
 
-function getUserData(token) {
+function getUserData(username, email, password) {
   return new Promise((resolve, reject) => {
-    const sqlQuery = 'SELECT * FROM `users` WHERE `token` = "' + token + '"';
-    con.query(sqlQuery, function (err, result, fields) {
+    const sqlQuery = 'SELECT * FROM `users` WHERE `username` = ? AND `email` = ? AND `password` = ?';
+    con.query(sqlQuery, [username, email, password], function (err, result, fields) {
       if (err) {
-        console.error(err); // Log the database query error for debugging
+        console.error(err);
         reject(err);
       } else {
-        resolve(result);
+        resolve(result[0]);
       }
     });
   });
