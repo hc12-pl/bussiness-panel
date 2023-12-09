@@ -41,13 +41,13 @@ async function addUser(username, password, phone, email, name, surname, active) 
 }
 
 // Przykład użycia:
-const username = 'Root1';
-const password = 'Root1';
-const phone = '123456789';
-const email = 'root1@localhost.com';
-const name = 'Root1';
-const surname = 'Root1';
-const active = 1; // 1 oznacza aktywnego użytkownika, 0 oznacza nieaktywnego
+// const username = 'Root1';
+// const password = 'Root1';
+// const phone = '123456789';
+// const email = 'root1@localhost.com';
+// const name = 'Root1';
+// const surname = 'Root1';
+// const active = 1; // 1 oznacza aktywnego użytkownika, 0 oznacza nieaktywnego
 
-// Dodaj użytkownika do bazy danych
-addUser(username, password, phone, email, name, surname, active);
+module.exports = { addUser };
+

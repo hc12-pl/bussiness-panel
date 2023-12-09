@@ -58,7 +58,7 @@ app.post('/login', async (req, res) => {
       };
 
       const generatedToken = generateToken(userPayload);
-
+      con.query(`UPDATE users SET token = ${generateToken} WHERE 'email' = '${userData.email}'`)
       res.send({
         message: 'Login successful',
         token: generatedToken,
