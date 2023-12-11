@@ -49,26 +49,38 @@ app.post('/login', async (req, res) => {
     const userData = await userHandler.getUserData(username, email, password);
 
     if (userData) {
-      // Generuj token na podstawie danych użytkownika
-      const userPayload = {
-        id: userData.id,
-        username: userData.username,
-        email: userData.email,
-        // Dodaj inne pola, jeśli są potrzebne
-      };
 
-      const generatedToken = generateToken(userPayload);
-      con.query(`UPDATE users SET token = ${generateToken} WHERE 'email' = '${userData.email}'`)
-      res.send({
-        message: 'Login successful',
-        token: generatedToken,
-      });
+      if (userData.active == 1) {
+        
+        const userPayload = {
+          id: userData.id,
+          username: userData.username,
+          email: userData.email,
+          // Dodaj inne pola, jeśli są potrzebne
+        };
+        const generatedToken = generateToken(userPayload);
+      con.query(`UPDATE users SET token = '${generatedToken}' WHERE email = '${userData.email}'`, (error, results) => {
+        res.send({
+          message: 'Login successful',
+          token: generatedToken,
+        })
+      })
       
     } else {
+      res.status(401).send({
+        error: "User not activated!"
+      })
+    }
+  } else {
       res.status(401).send({
         error: 'Invalid credentials, access denied!',
       });
     }
+
+      
+      
+
+      
   } catch (error) {
     console.error(error);
     res.status(500).send({
