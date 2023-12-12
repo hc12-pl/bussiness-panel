@@ -39,8 +39,7 @@ function getUserFull(id) {
     if (err) throw err;
 
     const res = JSON.parse(JSON.stringify(result[0]))
-    console.log(res)
-    
+    return res    
     
     
   })
@@ -48,4 +47,3 @@ function getUserFull(id) {
 
 module.exports = { getUserData, getUserFull };
 
-getUserFull(1)
