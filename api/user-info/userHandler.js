@@ -31,4 +31,21 @@ async function getUserData(username, email, password) {
   });
 }
 
-module.exports = { getUserData };
+
+function getUserFull(id) {
+  sqlQueryFull = 'SELECT `id`, `username`, `phone`, `email`, `name`, `surname`, `active`, `permLevel` FROM `users` WHERE `id` = ? ';
+
+  con.query(sqlQueryFull, [id], (err, result, fields) => {
+    if (err) throw err;
+
+    const res = JSON.parse(JSON.stringify(result[0]))
+    console.log(res)
+    
+    
+    
+  })
+}
+
+module.exports = { getUserData, getUserFull };
+
+getUserFull(1)
